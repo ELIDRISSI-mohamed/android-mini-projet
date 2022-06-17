@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity"
+    android:orientation="vertical"
+    >
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="195dp"
+                    android:layout_height="136dp"
+                    android:id="@+id/idImageProfile" android:paddingBottom="14dp" android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="90dp"
+                    android:src="@drawable/icon_avatar"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/idTextErrorView"
+                    android:textColor="@android:color/holo_red_dark" android:visibility="invisible"
+                    android:layout_marginLeft="20dp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="67dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Enter Firstname"
+                    android:padding="5dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="10"
+            >
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/idRegisterfname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp"
+
+
+                />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Enter Lastname"
+                    android:padding="5dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="10"
+            >
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/idRegisterlname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Enter phone number"
+                    android:padding="5dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="10"
+            >
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/idRegisterPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="phone"
+                        android:textSize="14sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Enter Email"
+                    android:padding="5dp"
+            >
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/idRegisterEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textEmailAddress"
+                        android:textSize="14sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Enter Password"
+                    android:padding="5dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="15"
+            >
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/idRegisterPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textPassword"
+                        android:textSize="14sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Confirm Password"
+                    android:padding="5dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="15"
+            >
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/idRegisterConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textPassword"
+                        android:textSize="14sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                    android:id="@+id/idBtnRegister"
+                    android:layout_width="335dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="Register"
+                    android:textAllCaps="false"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

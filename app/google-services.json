@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "61840533211",
+    "project_id": "freelacer-4fdd7",
+    "storage_bucket": "freelacer-4fdd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61840533211:android:172bfe134875b57f3acefe",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61840533211-gjh159sl0jfgptb6nh5hq8l0qm6ov67c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3J1SGh5kQkZEE-5Z9L7xJSMcFK4eOEFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61840533211-gjh159sl0jfgptb6nh5hq8l0qm6ov67c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
