@@ -162,15 +162,15 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
 
         int count = 0;
 
+        SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
         // activité : Sauter
         double d = Math.round(Math.sqrt(Math.pow(2, x) + Math.pow(2, y) + Math.pow(2, z)) - 2);
-        SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
         float threshold_sauter =preferences.getFloat("sauter", 10);
         // activité : Marcher
         double Magnitude = Math.sqrt(Math.pow(2, x) + Math.pow(2, y) + Math.pow(2, z));
         magnitudeD = Magnitude - magnitudeP;
         magnitudeP = Magnitude;
-        float threshold_marcher =preferences.getFloat("marcher", 6);
+        float threshold_marcher =preferences.getFloat("marcher", 15);
         // activité : Assis
         double m = Math.sqrt(Math.pow(2, x) + Math.pow(2, y) + Math.pow(2, z));
         mDelta = m - mPrevious;

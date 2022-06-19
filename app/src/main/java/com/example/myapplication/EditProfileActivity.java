@@ -122,12 +122,11 @@ public class EditProfileActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int reqCode, int resCode, @Nullable Intent data){
-        Toast.makeText(this, "On activity", Toast.LENGTH_LONG).show();
         super.onActivityResult(reqCode, resCode, data);
         if(reqCode==1 && resCode==RESULT_OK &&  data!=null && data.getData()!=null){
             imageUri=data.getData();
             imageProfile.setImageURI(imageUri);
-            uploadPicture();
+            //uploadPicture();
         }
     }
 

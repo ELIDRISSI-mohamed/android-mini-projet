@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void choosePicture() {
         Intent intent = new Intent();
-        intent.setType("images/**");
+        intent.setType("image/**");
         intent.setAction(intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 1);
     }

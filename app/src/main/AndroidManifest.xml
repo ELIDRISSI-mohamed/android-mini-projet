@@ -25,10 +25,6 @@
                 android:exported="false"
                 android:label="@string/title_activity_edit_profile"/>
         <activity
-                android:name=".MapsActivity"
-                android:exported="false"
-                android:label="@string/title_activity_maps"/>
-        <activity
                 android:name=".LocationActivity"
                 android:exported="false"
                 android:label="location_activity"/>
