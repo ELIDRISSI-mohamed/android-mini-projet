@@ -80,11 +80,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.put("firstname",fnameTxt.getText().toString());
                 user.put("lastname",lnameTxt.getText().toString());
                 user.put("email",auth.getCurrentUser().getEmail());
-                if(TextUtils.isEmpty(imageUri.toString())){
-                    user.put("profile", String.valueOf(imageOldUri));
-                }else {
-                    user.put("profile", String.valueOf(imageUri));
-                }
+                user.put("profile", String.valueOf(imageUri));
                 user.put("phone",phoneTxt.getText().toString());
                 docref.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -174,7 +170,6 @@ public class EditProfileActivity extends AppCompatActivity {
                             Toast.makeText(EditProfileActivity.this, "USer nulll", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "no data");
                         }
-                        imageOldUri = Uri.parse(doc.get("profile").toString());
                     }
                 }
             });
