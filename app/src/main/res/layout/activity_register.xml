@@ -25,7 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/idTextErrorView"
                     android:textColor="@android:color/holo_red_dark" android:visibility="invisible"
-                    android:layout_marginLeft="20dp"/>
+                    android:layout_marginLeft="40dp" android:textSize="15sp"/>
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="67dp"

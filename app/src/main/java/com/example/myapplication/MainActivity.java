@@ -3,18 +3,20 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnLogin;
-    private EditText emailTxt;
-    private EditText passwordTxt;
-    private TextView textCreateCompte;
+    private EditText emailTxt, passwordTxt;
+    private TextView textCreateCompte, textError;
     private FirebaseAuth auth;
 
 
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         emailTxt = findViewById(R.id.idRegisterEmail);
         passwordTxt = findViewById(R.id.idRegisterPassword);
         textCreateCompte = findViewById(R.id.idtextCreateCompte);
+        textError = findViewById(R.id.idTextError);
         btnLogin = (Button) findViewById(R.id.idLoginBtnLogin);
 
         auth = FirebaseAuth.getInstance();
@@ -35,11 +38,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         btnLogin.setOnClickListener(e-> {
+            textError.setVisibility(View.GONE);
             String txtEmail = emailTxt.getText().toString();
             String txtPassword = passwordTxt.getText().toString();
 
             if(TextUtils.isEmpty(txtPassword) || TextUtils.isEmpty(txtEmail)){
                 Toast.makeText(MainActivity.this, "Empty credentials!", Toast.LENGTH_SHORT).show();
+                textError.setText("Empty credentials!");
+                textError.setVisibility(View.VISIBLE);
             }else {
                 login(txtEmail, txtPassword);
             }
@@ -65,9 +71,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "sign In user successfully", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, LocationActivity.class));
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //display error message
+                Toast.makeText(MainActivity.this, "Password Or Email Incorrect !!", Toast.LENGTH_SHORT).show();
+                textError.setText("Password Or Email Incorrect !!!");
+                textError.setVisibility(View.VISIBLE);
+            }
         });
     }
-
-
 }

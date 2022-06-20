@@ -3,6 +3,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,7 +12,9 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -37,12 +40,15 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
 
-    SensorManager sensorManager;
-    Sensor accelerometer;
-    TextView action;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private TextView action;
+    private ImageView activityIcon;
+
     double magnitudeP = 0, mPrevious=0;
     double magnitudeD, mDelta;
     float x, y, z;
+    String uri = "@drawable-hdpi";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,8 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         action = (TextView) findViewById(R.id.idTextActivity);
+
+        //activityIcon = findViewById(R.id.activityIcon);
 
         /**************** Get location in maps *****/
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -170,7 +178,7 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
         double Magnitude = Math.sqrt(Math.pow(2, x) + Math.pow(2, y) + Math.pow(2, z));
         magnitudeD = Magnitude - magnitudeP;
         magnitudeP = Magnitude;
-        float threshold_marcher =preferences.getFloat("marcher", 15);
+        float threshold_marcher =preferences.getFloat("marcher", 5);
         // activité : Assis
         double m = Math.sqrt(Math.pow(2, x) + Math.pow(2, y) + Math.pow(2, z));
         mDelta = m - mPrevious;
@@ -192,7 +200,7 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
             action.setText("Activity : Running");
             action.invalidate();
         }else if(count == 3){
-            action.setText("Activity : Sitting");
+            action.setText("Activity : Standing");
             action.invalidate();
         }else if(count == 0 && z<4){
             action.setText("Activity : Standing");

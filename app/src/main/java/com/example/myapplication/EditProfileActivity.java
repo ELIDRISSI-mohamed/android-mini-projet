@@ -80,10 +80,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.put("firstname",fnameTxt.getText().toString());
                 user.put("lastname",lnameTxt.getText().toString());
                 user.put("email",auth.getCurrentUser().getEmail());
-                if(TextUtils.isEmpty(String.valueOf(imageUri))){
+                if(TextUtils.isEmpty(imageUri.toString())){
                     user.put("profile", String.valueOf(imageOldUri));
+                }else {
+                    user.put("profile", String.valueOf(imageUri));
                 }
-                else user.put("profile", String.valueOf(imageUri));
                 user.put("phone",phoneTxt.getText().toString());
                 docref.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
