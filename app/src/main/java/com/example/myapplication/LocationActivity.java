@@ -38,9 +38,11 @@ import com.google.android.gms.tasks.Task;
 
 public class LocationActivity extends AppCompatActivity implements SensorEventListener {
 
+
+    //String email = getIntent().getStringExtra("email");
+
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
-
     private SensorManager sensorManager;
     private Sensor accelerometer;
     double longitude,latitude,speed;
