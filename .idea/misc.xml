@@ -3,7 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/activity_action.xml" value="0.13272543059777103" />
+        <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/activity_action.xml" value="0.33" />
         <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/activity_activities.xml" value="0.25" />
         <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
         <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/activity_location.xml" value="0.22" />
@@ -13,6 +13,7 @@
         <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/activity_sensor.xml" value="0.1" />
         <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/activity_start.xml" value="0.16614583333333333" />
         <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/row.xml" value="0.33" />
+        <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/layout/row_activity.xml" value="0.27291666666666664" />
         <entry key="..\:/IntelligProjects/MyApplication/app/src/main/res/menu/menu.xml" value="0.1" />
       </map>
     </option>

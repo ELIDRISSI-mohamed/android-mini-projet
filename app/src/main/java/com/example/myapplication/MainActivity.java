@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText emailTxt, passwordTxt;
     private TextView textCreateCompte, textError;
     private FirebaseAuth auth;
-
+    private String mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
             textError.setVisibility(View.GONE);
             String txtEmail = emailTxt.getText().toString();
             String txtPassword = passwordTxt.getText().toString();
-
             if(TextUtils.isEmpty(txtPassword) || TextUtils.isEmpty(txtEmail)){
                 Toast.makeText(MainActivity.this, "Empty credentials!", Toast.LENGTH_SHORT).show();
                 textError.setText("Empty credentials!");

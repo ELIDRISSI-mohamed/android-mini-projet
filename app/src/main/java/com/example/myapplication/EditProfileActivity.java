@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +40,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     private static final String TAG = "EditProfileActivity";
+    RadioGroup sexe;
+    RadioButton rdM, rdF;
     private Button saveProfile;
     private EditText fnameTxt, lnameTxt, phoneTxt,emailTxt;
     private ImageView imageProfile;
@@ -65,6 +69,9 @@ public class EditProfileActivity extends AppCompatActivity {
         phoneTxt = findViewById(R.id.idRegisterPhone);
         emailTxt = findViewById(R.id.idRegisterEmail);
         emailTxt.setEnabled(false);
+        sexe =(RadioGroup) findViewById(R.id.radioGroup2);
+        rdM = (RadioButton) findViewById(R.id.radioButton2);
+        rdF = (RadioButton) findViewById(R.id.radioButton3);
         imageProfile = findViewById(R.id.imageProfile);
 
         //Change image profile
@@ -75,18 +82,24 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int selected = sexe.getCheckedRadioButtonId();
+                RadioButton gender= findViewById(selected);
+
                 DocumentReference docref = fstore.collection("freelancers").document(auth.getCurrentUser().getUid());
                 HashMap<String,Object> user = new HashMap<>();
-                user.put("firstname",fnameTxt.getText().toString());
-                user.put("lastname",lnameTxt.getText().toString());
-                user.put("email",auth.getCurrentUser().getEmail());
+                user.put("firstname", fnameTxt.getText().toString());
+                user.put("lastname", lnameTxt.getText().toString());
+                user.put("email", auth.getCurrentUser().getEmail());
                 user.put("profile", String.valueOf(imageUri));
-                user.put("phone",phoneTxt.getText().toString());
+                user.put("phone", phoneTxt.getText().toString());
+                String sexeUser = gender.getText().toString();
+                user.put("sexe", gender.getText().toString());
                 docref.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(EditProfileActivity.this, "Profile updated", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(EditProfileActivity.this, LocationActivity.class));
                         }
                     }
                 });
@@ -168,6 +181,10 @@ public class EditProfileActivity extends AppCompatActivity {
                             emailTxt.setText(doc.get("email").toString());
                             fnameTxt.setText(doc.get("firstname").toString());
                             lnameTxt.setText(doc.get("lastname").toString());
+                            if(doc.get("sexe").equals("Male"))
+                                rdM.setChecked(true);
+                            else
+                                rdF.setChecked(true);
                             imageProfile.setImageURI(Uri.parse(doc.get("profile").toString()));
                         }else{
                             Toast.makeText(EditProfileActivity.this, "USer nulll", Toast.LENGTH_SHORT).show();

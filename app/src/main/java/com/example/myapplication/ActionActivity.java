@@ -1,20 +1,22 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.example.myapplication.adapter.AdapterActivity;
+import com.example.myapplication.db.MyDataBase;
+import com.example.myapplication.model.Activity;
+
 import java.util.List;
 
 public class ActionActivity extends AppCompatActivity {
-    ListView listView;
+    private RecyclerView recyclerView;
     MyDataBase mydb = new MyDataBase(ActionActivity.this);
 
     @Override
@@ -22,15 +24,10 @@ public class ActionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action);
 
-        listView = findViewById(R.id.listView);
-
-        ArrayList<Activity> activities = new ArrayList<Activity>();
-        activities = (ArrayList<Activity>) mydb.getActivities();
-
-        ArrayAdapter<Activity> adapter = new ArrayAdapter<Activity>(this,
-                android.R.layout.simple_list_item_1, activities);
-        listView.setAdapter(adapter);
-
+        recyclerView = findViewById(R.id.idRecHistory);
+        List<Activity> activities = mydb.getActivities();
+        AdapterActivity adapter = new AdapterActivity(this, activities);
+        recyclerView.setAdapter(adapter);
     }
     //Menu
     @Override

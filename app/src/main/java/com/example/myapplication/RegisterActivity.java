@@ -1,10 +1,18 @@
 package com.example.myapplication;
 
+import android.Manifest;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,10 +43,19 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private EditText emailTxt, passwordTxt, confirmPasswordTxt,fnameTxt, lnameTxt, phoneTxt;
     private TextView errorTxt;
+    private RadioGroup sexe;
+
     private FirebaseAuth auth;
     private FirebaseFirestore fstore;
     private String userID;
     private String randomKey;
+
+    private static final int CAMERA_REQUEST_CODE = 100;
+    private static final int STORAGE_REQUEST_CODE = 101;
+    private String[] cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private String[] storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};;
+    private static final int IMAGE_PICK_CAMERA_CODE = 102;
+    private static final int IMAGE_PICK_GALLERY_CODE = 103;
 
     private ImageView imageProfile;
     private Uri imageUri;
@@ -60,6 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
         errorTxt = findViewById(R.id.idTextErrorView);
         btnRegister = findViewById(R.id.idBtnRegister);
         imageProfile = findViewById(R.id.idImageProfile);
+        sexe = findViewById(R.id.radioGroup);
 
         auth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
@@ -68,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
         storageReference = storage.getReference();
         // save image
         imageProfile.setOnClickListener(e->{
-            choosePicture();
+            optionChooseImage();
         });
         //Register info
         btnRegister.setOnClickListener(e->{
@@ -80,9 +98,12 @@ public class RegisterActivity extends AppCompatActivity {
             String txtfname = fnameTxt.getText().toString();
             String txtlname = lnameTxt.getText().toString();
             String txtphone = phoneTxt.getText().toString();
+            int selected = sexe.getCheckedRadioButtonId();
+            RadioButton gender=(RadioButton) findViewById(selected);
+            String sexeUser = gender.getText().toString();
 
             if (TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword)
-                    || TextUtils.isEmpty(txtconfirmPassword) || TextUtils.isEmpty(txtfname)
+                    || TextUtils.isEmpty(txtconfirmPassword) || TextUtils.isEmpty(txtfname) || TextUtils.isEmpty(sexeUser)
                     || TextUtils.isEmpty(txtlname) || TextUtils.isEmpty(txtphone) || TextUtils.isEmpty(randomKey)){
                 Toast.makeText(RegisterActivity.this, "Empty credentials!", Toast.LENGTH_SHORT).show();
                 errorTxt.setText("Empty credentials!");
@@ -93,16 +114,68 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this, "Password and confirm password not matched", Toast.LENGTH_SHORT).show();
 
             }else {
-                registerUser(txtEmail , txtPassword, txtfname, txtlname, txtphone);
+                registerUser(txtEmail , txtPassword, txtfname, txtlname, txtphone, sexeUser);
             }
         });
     }
 
+    private void optionChooseImage(){
+        String[] options = {"Camera","Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Image From");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    if(!checkCameraPermission()){
+                        requestCameraPermission();
+                    }else {
+                        pickFromCamera();
+                    }
+                }else if(i == 1) {
+                    if(!checkStoragePermission()){
+                        requestStoragePermission();
+                    }else {
+                        choosePicture();
+                    }
+                }
+            }
+        });
+        builder.create().show();
+    }
+    // Photo from camera
+    private void pickFromCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "Image title");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Image description");
+        Log.d("test","here");
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Log.d("test",imageUri.toString());
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+        //startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
+        Toast.makeText(this, "Camera & Storage permissions are required", Toast.LENGTH_SHORT).show();
+    }
+    // Chose image from gallery
     private void choosePicture() {
         Intent intent = new Intent();
         intent.setType("image/**");
         intent.setAction(intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
+    }
+    // save image in db
+    @Override
+    protected void onActivityResult(int reqCode, int resCode, @Nullable Intent data){
+        super.onActivityResult(reqCode, resCode, data);
+        if(resCode==RESULT_OK &&  data!=null && data.getData()!=null){
+            if(reqCode == IMAGE_PICK_GALLERY_CODE) {
+                imageUri = data.getData();
+            }else if(reqCode == IMAGE_PICK_CAMERA_CODE){
+                Log.d("test","image");
+            }
+            imageProfile.setImageURI(imageUri);
+            uploadPicture();
+        }
     }
     private void uploadPicture() {
         randomKey = UUID.randomUUID().toString();
@@ -119,18 +192,26 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    protected void onActivityResult(int reqCode, int resCode, @Nullable Intent data){
-        super.onActivityResult(reqCode, resCode, data);
-        if(reqCode==1 && resCode==RESULT_OK &&  data!=null && data.getData()!=null){
-            imageUri=data.getData();
-            imageProfile.setImageURI(imageUri);
-            uploadPicture();
-        }
+
+    // Check permission
+    private boolean checkStoragePermission(){
+        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+    private void requestStoragePermission(){
+        ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
     }
 
+    private boolean checkCameraPermission(){
+        boolean result = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+        boolean result1 = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        return result && result1;
+    }
+    private void requestCameraPermission(){
+        ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
+    }
 
-    private void registerUser(String email, String password,String fname,String lname,String phone) {
+    private void registerUser(String email, String password,String fname,String lname,String phone, String sexe) {
 
         auth.createUserWithEmailAndPassword(email ,password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -146,6 +227,7 @@ public class RegisterActivity extends AppCompatActivity {
                     user.put("lastname", lname);
                     user.put("phone", phone);
                     user.put("email", email);
+                    user.put("sexe", sexe);
                     user.put("profile", String.valueOf(imageUri));
                     docref.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

@@ -3,7 +3,6 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,7 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -24,6 +23,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
+import com.example.myapplication.db.MyDataBase;
+import com.example.myapplication.model.Activity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,7 +43,11 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
+    double longitude,latitude,speed;
     private TextView action;
+    private String email;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
     private ImageView activityIcon;
     MyDataBase mydb = new MyDataBase(LocationActivity.this);
 
@@ -51,11 +56,13 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
     float x, y, z;
     String uri = "@drawable-hdpi";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
+        email="elidrissi1818@gmail.com";
         /**************** Activity *****/
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -77,7 +84,6 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
                     , new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
     }
-
 
     //Menu
     @Override
@@ -120,7 +126,9 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
                     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
-                            LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            LatLng latLng = new LatLng(latitude, longitude);
                             MarkerOptions options = new MarkerOptions().position(latLng).title("I am there");
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
                             googleMap.addMarker(options);
@@ -172,8 +180,18 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
         y = values[1];
         z = values[2];
 
-        int count = 0;
+        //
+        long curTime = System.currentTimeMillis();
 
+        if ((curTime - lastUpdate) > 100) {
+            long diffTime = (curTime - lastUpdate);
+            lastUpdate = curTime;
+            speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+        int count = 0;
         SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
         // activité : Sauter
         double d = Math.round(Math.sqrt(Math.pow(2, x) + Math.pow(2, y) + Math.pow(2, z)) - 2);
@@ -196,22 +214,31 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
         }else if(mDelta > threshold_assis){
             count=3;
         }
-
+        String detail;
         if (count == 1){
-            action.setText("Activity : Jumped");
-            mydb.addActivity(new Activity("elidrissi@gmail.com", "Jumped"));
+            detail = "Latitude : "+latitude+"\nLongitude : "
+                    +longitude+"\nSpeed [m/s] : "+speed;
+            action.setText("Activity : Jumped\n"+ detail);
+            mydb.addActivity(new Activity(email, "Jumped", latitude, longitude, speed));
             action.invalidate();
         }else if (count == 2){
-            // action.setText("Activity : Running");
-            mydb.addActivity(new Activity("elidrissi@gmail.com", "Running"));
+            detail = "Latitude : "+latitude+"\nLongitude : "
+                    +longitude+"\nSpeed [m/s] : "+speed;
+            // action.setText("Activity : Running\n"+detail);
+            mydb.addActivity(new Activity(email, "Running", latitude, longitude, speed));
             // action.invalidate();
             System.out.printf("Running");
         }else if(count == 3){
-            mydb.addActivity(new Activity("elidrissi@gmail.com", "Standing"));
-            action.setText("Activity : Standing");
+            detail = "Latitude : "+latitude+"\nLongitude : "
+                    +longitude+"\nSpeed [m/s] : "+0;
+            mydb.addActivity(new Activity(email, "Sitting", latitude, longitude, 0));
+            action.setText("Activity : Sitting\n"+detail);
             action.invalidate();
         }else if(count == 0 && z<4){
-            action.setText("Activity : Standing");
+            detail = "Latitude : "+latitude+"\nLongitude : "
+                +longitude+"\nSpeed [m/s] : "+speed;
+            mydb.addActivity(new Activity(email, "Sitting", latitude, longitude, speed));
+            action.setText("Activity : Standing\n"+detail);
             action.invalidate();
         }
 

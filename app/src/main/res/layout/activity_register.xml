@@ -26,11 +26,33 @@
                     android:layout_height="wrap_content" android:id="@+id/idTextErrorView"
                     android:textColor="@android:color/holo_red_dark" android:visibility="invisible"
                     android:layout_marginLeft="40dp" android:textSize="15sp"/>
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/idImageProfile"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="115dp"
+                android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/radioGroup1"
+                android:layout_alignLeft="@+id/radioGroup1"
+                android:text="Female" />
+            </RadioGroup>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="67dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:hint="Enter Firstname"
                 android:padding="5dp"
@@ -53,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="67dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:hint="Enter Lastname"
                 android:padding="5dp"
@@ -77,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="67dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:hint="Enter phone number"
                 android:padding="5dp"
@@ -99,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="67dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:hint="Enter Email"
                 android:padding="5dp"
@@ -120,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="67dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:hint="Enter Password"
                 android:padding="5dp"
@@ -142,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="67dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:hint="Confirm Password"
                 android:padding="5dp"
@@ -165,7 +187,7 @@
                 android:layout_width="335dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="50dp"
                 android:background="#3F51B5"
