@@ -44,6 +44,7 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
     private Sensor accelerometer;
     private TextView action;
     private ImageView activityIcon;
+    MyDataBase mydb = new MyDataBase(LocationActivity.this);
 
     double magnitudeP = 0, mPrevious=0;
     double magnitudeD, mDelta;
@@ -91,6 +92,9 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
         switch ((item.getItemId())){
             case R.id.idEditProfile:
                 startActivity(new Intent(LocationActivity.this, EditProfileActivity.class));
+                return true;
+            case R.id.idAction:
+                startActivity(new Intent(LocationActivity.this, ActionActivity.class));
                 return true;
             case R.id.idLogout:
                 startActivity(new Intent(LocationActivity.this, MainActivity.class));
@@ -195,11 +199,15 @@ public class LocationActivity extends AppCompatActivity implements SensorEventLi
 
         if (count == 1){
             action.setText("Activity : Jumped");
+            mydb.addActivity(new Activity("elidrissi@gmail.com", "Jumped"));
             action.invalidate();
         }else if (count == 2){
-            action.setText("Activity : Running");
-            action.invalidate();
+            // action.setText("Activity : Running");
+            mydb.addActivity(new Activity("elidrissi@gmail.com", "Running"));
+            // action.invalidate();
+            System.out.printf("Running");
         }else if(count == 3){
+            mydb.addActivity(new Activity("elidrissi@gmail.com", "Standing"));
             action.setText("Activity : Standing");
             action.invalidate();
         }else if(count == 0 && z<4){

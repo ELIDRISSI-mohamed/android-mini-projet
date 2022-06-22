@@ -141,6 +141,9 @@ public class EditProfileActivity extends AppCompatActivity {
             case R.id.idMaps:
                 startActivity(new Intent(EditProfileActivity.this, LocationActivity.class));
                 return true;
+            case R.id.idAction:
+                startActivity(new Intent(EditProfileActivity.this, ActionActivity.class));
+                return true;
             case R.id.idLogout:
                 startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
                 return true;
