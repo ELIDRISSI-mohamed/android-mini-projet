@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity"
     android:orientation="vertical"
-    android:background="@drawable/icon_back_main" >
+    android:background="@drawable/icon_back_re" >
 
     <ScrollView
             android:layout_width="match_parent"
